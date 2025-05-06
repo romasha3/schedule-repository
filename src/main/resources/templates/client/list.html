@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Клієнти</title></head>
+<body>
+<h2>Клієнти</h2>
+<a th:href="@{/clients/new}">Додати клієнта</a>
+<table>
+    <tr>
+        <th>ID</th><th>Ім'я</th><th>Email</th><th>Дії</th>
+    </tr>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}"></td>
+        <td th:text="${client.name}"></td>
+        <td th:text="${client.email}"></td>
+        <td>
+            <a th:href="@{/clients/edit/{id}(id=${client.id})}">Редагувати</a>
+            <a th:href="@{/clients/delete/{id}(id=${client.id})}">Видалити</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

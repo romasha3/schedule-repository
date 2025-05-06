@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Заняття</title></head>
+<body>
+<h2 th:text="${activity.id == null} ? 'Створити заняття' : 'Редагувати заняття'"></h2>
+<form th:action="@{/activities/save}" th:object="${activity}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    Назва: <input type="text" th:field="*{name}" required/><br>
+    <button type="submit">Зберегти</button>
+</form>
+</body>
+</html>

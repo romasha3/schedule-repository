@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Кімнати</title></head>
+<body>
+<h2>Кімнати</h2>
+<a th:href="@{/rooms/new}">Додати кімнату</a>
+<table>
+    <tr>
+        <th>ID</th><th>Номер</th><th>Дії</th>
+    </tr>
+    <tr th:each="room : ${rooms}">
+        <td th:text="${room.id}"></td>
+        <td th:text="${room.roomNumber}"></td>
+        <td>
+            <a th:href="@{/rooms/edit/{id}(id=${room.id})}">Редагувати</a>
+            <a th:href="@{/rooms/delete/{id}(id=${room.id})}">Видалити</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

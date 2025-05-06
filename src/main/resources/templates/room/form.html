@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Кімната</title></head>
+<body>
+<h2 th:text="${room.id == null} ? 'Додати кімнату' : 'Редагувати кімнату'"></h2>
+<form th:action="@{/rooms/save}" th:object="${room}" method="post">
+    <input type="hidden" th:field="*{id}"/>
+    Номер: <input type="text" th:field="*{roomNumber}" required/><br>
+    <button type="submit">Зберегти</button>
+</form>
+</body>
+</html>

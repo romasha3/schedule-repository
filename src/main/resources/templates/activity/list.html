@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Список занять</title></head>
+<body>
+<h2>Заняття</h2>
+<a th:href="@{/activities/new}">Додати заняття</a>
+<table>
+    <tr>
+        <th>ID</th><th>Назва</th><th>Дії</th>
+    </tr>
+    <tr th:each="activity : ${activities}">
+        <td th:text="${activity.id}">1</td>
+        <td th:text="${activity.name}">Йога</td>
+        <td>
+            <a th:href="@{/activities/edit/{id}(id=${activity.id})}">Редагувати</a>
+            <a th:href="@{/activities/delete/{id}(id=${activity.id})}">Видалити</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

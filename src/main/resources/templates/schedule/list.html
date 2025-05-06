@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Розклад</title></head>
+<body>
+<h2>Розклад занять</h2>
+<table>
+    <tr>
+        <th>Дата</th><th>Час</th><th>Заняття</th><th>Інструктор</th><th>Клієнт</th><th>Кімната</th>
+    </tr>
+    <tr th:each="s : ${schedules}">
+        <td th:text="${s.date}"></td>
+        <td th:text="${s.time}"></td>
+        <td th:text="${s.activity.name}"></td>
+        <td th:text="${s.instructor.name}"></td>
+        <td th:text="${s.client.name}"></td>
+        <td th:text="${s.room.roomNumber}"></td>
+    </tr>
+</table>
+</body>
+</html>

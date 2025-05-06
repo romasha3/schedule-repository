@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Інструктори</title></head>
+<body>
+<h2>Інструктори</h2>
+<a th:href="@{/instructors/new}">Додати інструктора</a>
+<table>
+    <tr>
+        <th>ID</th><th>Ім'я</th><th>Email</th><th>Дії</th>
+    </tr>
+    <tr th:each="instructor : ${instructors}">
+        <td th:text="${instructor.id}"></td>
+        <td th:text="${instructor.name}"></td>
+        <td th:text="${instructor.email}"></td>
+        <td>
+            <a th:href="@{/instructors/edit/{id}(id=${instructor.id})}">Редагувати</a>
+            <a th:href="@{/instructors/delete/{id}(id=${instructor.id})}">Видалити</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
