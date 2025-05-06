@@ -7,44 +7,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/activities")
 public class ActivityController {
 
-    @Autowired
-    private ActivityService activityService;
+    private final ActivityService activityService;
+
+    public ActivityController(ActivityService activityService) {
+        this.activityService = activityService;
+    }
 
     @GetMapping
-    public String listActivities(Model model) {
-        model.addAttribute("activities", activityService.getAllActivities());
-        return "activities";
+    public String list(Model model) {
+        model.addAttribute("activities", activityService.getAll());
+        return "activity/list";
     }
 
     @GetMapping("/new")
-    public String showActivityForm(Model model) {
+    public String createForm(Model model) {
         model.addAttribute("activity", new Activity());
-        return "activity-form";
+        return "activity/form";
     }
 
     @PostMapping
-    public String saveActivity(@ModelAttribute Activity activity) {
-        activityService.saveActivity(activity);
+    public String save(@ModelAttribute Activity activity) {
+        activityService.save(activity);
         return "redirect:/activities";
     }
 
     @GetMapping("/edit/{id}")
-    public String editActivity(@PathVariable Long id, Model model) {
-        Optional<Activity> activity = activityService.getActivityById(id);
-        model.addAttribute("activity", activity);
-        return "activity-form";
+    public String edit(@PathVariable Long id, Model model) {
+        model.addAttribute("activity", activityService.getById(id));
+        return "activity/form";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteActivity(@PathVariable Long id) {
-        activityService.deleteActivity(id);
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        activityService.delete(id);
         return "redirect:/activities";
     }
 }
+
+

@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Кімната</title></head>
+<head>
+    <title>Форма кімнати</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 <body>
-<h2 th:text="${room.id == null} ? 'Додати кімнату' : 'Редагувати кімнату'"></h2>
-<form th:action="@{/rooms/save}" th:object="${room}" method="post">
-    <input type="hidden" th:field="*{id}"/>
-    Номер: <input type="text" th:field="*{roomNumber}" required/><br>
-    <button type="submit">Зберегти</button>
-</form>
+<div class="container mt-5">
+    <h2 th:text="${room.id == null} ? 'Додати кімнату' : 'Редагувати кімнату'"></h2>
+    <form th:action="@{/rooms}" th:object="${room}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="mb-3">
+            <label>Назва</label>
+            <input type="text" th:field="*{name}" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label>Місткість</label>
+            <input type="number" th:field="*{capacity}" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-success">Зберегти</button>
+        <a href="/rooms" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
 </body>
 </html>

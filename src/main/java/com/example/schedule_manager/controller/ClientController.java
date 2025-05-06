@@ -6,44 +6,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
 
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
+
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
     @GetMapping
-    public String listClients(Model model) {
-        model.addAttribute("clients", clientService.getAllClients());
-        return "clients";
+    public String list(Model model) {
+        model.addAttribute("clients", clientService.getAll());
+        return "client/list";
     }
 
     @GetMapping("/new")
-    public String showClientForm(Model model) {
+    public String createForm(Model model) {
         model.addAttribute("client", new Client());
-        return "client-form";
+        return "client/form";
     }
 
     @PostMapping
-    public String saveClient(@ModelAttribute Client client) {
-        clientService.saveClient(client);
+    public String save(@ModelAttribute Client client) {
+        clientService.save(client);
         return "redirect:/clients";
     }
 
     @GetMapping("/edit/{id}")
-    public String editClient(@PathVariable Long id, Model model) {
-        Optional<Client> client = clientService.getClientById(id);
-        model.addAttribute("client", client);
-        return "client-form";
+    public String edit(@PathVariable Long id, Model model) {
+        model.addAttribute("client", clientService.getById(id));
+        return "client/form";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteClient(@PathVariable Long id) {
-        clientService.deleteClient(id);
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        clientService.delete(id);
         return "redirect:/clients";
     }
 }
+

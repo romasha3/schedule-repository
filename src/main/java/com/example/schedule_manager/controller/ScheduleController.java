@@ -2,68 +2,66 @@ package com.example.schedule_manager.controller;
 
 import com.example.schedule_manager.model.Schedule;
 import com.example.schedule_manager.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-
 @Controller
-@RequestMapping("/schedule")
+@RequestMapping("/schedules")
 public class ScheduleController {
 
-    @Autowired
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
+    private final ActivityService activityService;
+    private final InstructorService instructorService;
+    private final ClientService clientService;
+    private final RoomService roomService;
 
-    @Autowired
-    private ActivityService activityService;
-
-    @Autowired
-    private InstructorService instructorService;
-
-    @Autowired
-    private ClientService clientService;
-
-    @Autowired
-    private RoomService roomService;
+    public ScheduleController(ScheduleService scheduleService,
+                              ActivityService activityService,
+                              InstructorService instructorService,
+                              ClientService clientService,
+                              RoomService roomService) {
+        this.scheduleService = scheduleService;
+        this.activityService = activityService;
+        this.instructorService = instructorService;
+        this.clientService = clientService;
+        this.roomService = roomService;
+    }
 
     @GetMapping
-    public String listSchedules(Model model) {
-        model.addAttribute("schedules", scheduleService.getAllSchedules());
-        return "schedule";
+    public String list(Model model) {
+        model.addAttribute("schedules", scheduleService.getAll());
+        return "schedule/list";
     }
 
     @GetMapping("/new")
-    public String showScheduleForm(Model model) {
+    public String createForm(Model model) {
         model.addAttribute("schedule", new Schedule());
-        model.addAttribute("activities", activityService.getAllActivities());
-        model.addAttribute("instructors", instructorService.getAllInstructors());
-        model.addAttribute("clients", clientService.getAllClients());
-        model.addAttribute("rooms", roomService.getAllRooms());
-        return "schedule-form";
+        model.addAttribute("activities", activityService.getAll());
+        model.addAttribute("instructors", instructorService.getAll());
+        model.addAttribute("clients", clientService.getAll());
+        model.addAttribute("rooms", roomService.getAll());
+        return "schedule/form";
     }
 
     @PostMapping
-    public String saveSchedule(@ModelAttribute Schedule schedule) {
-        scheduleService.saveSchedule(schedule);
-        return "redirect:/schedule";
+    public String save(@ModelAttribute Schedule schedule) {
+        scheduleService.save(schedule);
+        return "redirect:/schedules";
     }
 
     @GetMapping("/edit/{id}")
-    public String editSchedule(@PathVariable Long id, Model model) {
-        Optional<Schedule> schedule = scheduleService.getScheduleById(id);
-        model.addAttribute("schedule", schedule);
-        model.addAttribute("activities", activityService.getAllActivities());
-        model.addAttribute("instructors", instructorService.getAllInstructors());
-        model.addAttribute("clients", clientService.getAllClients());
-        model.addAttribute("rooms", roomService.getAllRooms());
-        return "schedule-form";
+    public String edit(@PathVariable Long id, Model model) {
+        model.addAttribute("schedule", scheduleService.getById(id));
+        model.addAttribute("activities", activityService.getAll());
+        model.addAttribute("instructors", instructorService.getAll());
+        model.addAttribute("clients", clientService.getAll());
+        model.addAttribute("rooms", roomService.getAll());
+        return "schedule/form";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteSchedule(@PathVariable Long id) {
-        scheduleService.deleteSchedule(id);
-        return "redirect:/schedule";
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        scheduleService.delete(id);
+        return "redirect:/schedules";
     }
 }

@@ -6,44 +6,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/rooms")
 public class RoomController {
 
-    @Autowired
-    private RoomService roomService;
+    private final RoomService roomService;
+
+    public RoomController(RoomService roomService) {
+        this.roomService = roomService;
+    }
 
     @GetMapping
-    public String listRooms(Model model) {
-        model.addAttribute("rooms", roomService.getAllRooms());
-        return "rooms";
+    public String list(Model model) {
+        model.addAttribute("rooms", roomService.getAll());
+        return "room/list";
     }
 
     @GetMapping("/new")
-    public String showRoomForm(Model model) {
+    public String createForm(Model model) {
         model.addAttribute("room", new Room());
-        return "room-form";
+        return "room/form";
     }
 
     @PostMapping
-    public String saveRoom(@ModelAttribute Room room) {
-        roomService.saveRoom(room);
+    public String save(@ModelAttribute Room room) {
+        roomService.save(room);
         return "redirect:/rooms";
     }
 
     @GetMapping("/edit/{id}")
-    public String editRoom(@PathVariable Long id, Model model) {
-        Optional<Room> room = roomService.getRoomById(id);
-        model.addAttribute("room", room);
-        return "room-form";
+    public String edit(@PathVariable Long id, Model model) {
+        model.addAttribute("room", roomService.getById(id));
+        return "room/form";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteRoom(@PathVariable Long id) {
-        roomService.deleteRoom(id);
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        roomService.delete(id);
         return "redirect:/rooms";
     }
 }

@@ -15,8 +15,6 @@ public class Activity {
     private Long id;
 
     private String title;
-
     private String description;
-
     private int durationInMinutes;
 }

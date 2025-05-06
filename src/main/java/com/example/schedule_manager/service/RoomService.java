@@ -5,29 +5,30 @@ import com.example.schedule_manager.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 @Service
 public class RoomService {
+
     private final RoomRepository roomRepository;
 
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
-    public List<Room> getAllRooms() {
+    public List<Room> getAll() {
         return roomRepository.findAll();
     }
 
-    public Optional<Room> getRoomById(Long id) {
-        return roomRepository.findById(id);
+    public Room getById(Long id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
     }
 
-    public Room saveRoom(Room room) {
-        return roomRepository.save(room);
+    public void save(Room room) {
+        roomRepository.save(room);
     }
 
-    public void deleteRoom(Long id) {
+    public void delete(Long id) {
         roomRepository.deleteById(id);
     }
 }
+

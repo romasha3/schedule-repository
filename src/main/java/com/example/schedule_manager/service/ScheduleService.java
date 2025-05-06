@@ -5,31 +5,29 @@ import com.example.schedule_manager.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Service
 public class ScheduleService {
+
     private final ScheduleRepository scheduleRepository;
 
     public ScheduleService(ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
     }
 
-    public List<Schedule> getAllSchedules() {
+    public List<Schedule> getAll() {
         return scheduleRepository.findAll();
     }
 
-
-    public Optional<Schedule> getScheduleById(Long id) {
-        return scheduleRepository.findById(id);
+    public Schedule getById(Long id) {
+        return scheduleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Schedule not found"));
     }
 
-    public Schedule saveSchedule(Schedule schedule) {
-        return scheduleRepository.save(schedule);
+    public void save(Schedule schedule) {
+        scheduleRepository.save(schedule);
     }
 
-    public void deleteSchedule(Long id) {
+    public void delete(Long id) {
         scheduleRepository.deleteById(id);
     }
 }

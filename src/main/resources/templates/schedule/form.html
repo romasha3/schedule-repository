@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Форма розкладу</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 th:text="${schedule.id == null} ? 'Створити запис розкладу' : 'Редагувати запис'"></h2>
+    <form th:action="@{/schedules}" th:object="${schedule}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="mb-3">
+            <label>Дата та час</label>
+            <input type="datetime-local" th:field="*{startTime}" class="form-control"/>
+        </div>
+        <div class="mb-3">
+            <label>Заняття</label>
+            <select th:field="*{activity}" class="form-select" th:object="${activities}">
+                <option th:each="a : ${activities}" th:value="${a}" th:text="${a.title}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Інструктор</label>
+            <select th:field="*{instructor}" class="form-select">
+                <option th:each="i : ${instructors}" th:value="${i}" th:text="${i.name}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Клієнт</label>
+            <select th:field="*{client}" class="form-select">
+                <option th:each="c : ${clients}" th:value="${c}" th:text="${c.name}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label>Кімната</label>
+            <select th:field="*{room}" class="form-select">
+                <option th:each="r : ${rooms}" th:value="${r}" th:text="${r.name}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Зберегти</button>
+        <a href="/schedules" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
+</body>
+</html>

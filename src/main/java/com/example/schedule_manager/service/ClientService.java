@@ -5,29 +5,29 @@ import com.example.schedule_manager.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 @Service
 public class ClientService {
+
     private final ClientRepository clientRepository;
 
     public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
-    public List<Client> getAllClients() {
+    public List<Client> getAll() {
         return clientRepository.findAll();
     }
 
-    public Optional<Client> getClientById(Long id) {
-        return clientRepository.findById(id);
+    public Client getById(Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found"));
     }
 
-    public Client saveClient(Client client) {
-        return clientRepository.save(client);
+    public void save(Client client) {
+        clientRepository.save(client);
     }
 
-    public void deleteClient(Long id) {
+    public void delete(Long id) {
         clientRepository.deleteById(id);
     }
 }

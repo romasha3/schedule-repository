@@ -5,29 +5,32 @@ import com.example.schedule_manager.repository.ActivityRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class ActivityService {
+
     private final ActivityRepository activityRepository;
 
     public ActivityService(ActivityRepository activityRepository) {
         this.activityRepository = activityRepository;
     }
 
-    public List<Activity> getAllActivities() {
+    public List<Activity> getAll() {
         return activityRepository.findAll();
     }
 
-    public Optional<Activity> getActivityById(Long id) {
-        return activityRepository.findById(id);
+    public Activity getById(Long id) {
+        return activityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Activity not found"));
     }
 
-    public Activity saveActivity(Activity activity) {
-        return activityRepository.save(activity);
+    public void save(Activity activity) {
+        activityRepository.save(activity);
     }
 
-    public void deleteActivity(Long id) {
+    public void delete(Long id) {
         activityRepository.deleteById(id);
     }
 }
+
