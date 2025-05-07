@@ -1,10 +1,13 @@
 package com.example.schedule_manager.service;
 
+import com.example.schedule_manager.model.Room;
 import com.example.schedule_manager.model.Schedule;
 import com.example.schedule_manager.repository.ScheduleRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
 @Service
 public class ScheduleService {
 
@@ -29,5 +32,16 @@ public class ScheduleService {
 
     public void delete(Long id) {
         scheduleRepository.deleteById(id);
+    }
+
+    public int countClientsInRoom(Room room, LocalDateTime time) {
+        List<Schedule> all = scheduleRepository.findAll();
+        int count = 0;
+        for (Schedule s : all) {
+            if (s.getRoom().equals(room) && s.getStartTime().equals(time)) {
+                count++;
+            }
+        }
+        return count;
     }
 }

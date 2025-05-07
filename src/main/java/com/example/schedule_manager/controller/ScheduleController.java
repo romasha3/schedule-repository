@@ -5,6 +5,10 @@ import com.example.schedule_manager.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Controller
 @RequestMapping("/schedules")
 public class ScheduleController {
@@ -15,10 +19,8 @@ public class ScheduleController {
     private final ClientService clientService;
     private final RoomService roomService;
 
-    public ScheduleController(ScheduleService scheduleService,
-                              ActivityService activityService,
-                              InstructorService instructorService,
-                              ClientService clientService,
+    public ScheduleController(ScheduleService scheduleService, ActivityService activityService,
+                              InstructorService instructorService, ClientService clientService,
                               RoomService roomService) {
         this.scheduleService = scheduleService;
         this.activityService = activityService;
@@ -44,7 +46,20 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute Schedule schedule) {
+    public String save(@ModelAttribute Schedule schedule, Model model) {
+        int count = scheduleService.countClientsInRoom(schedule.getRoom(), schedule.getStartTime());
+        int capacity = schedule.getRoom().getCapacity();
+
+        if (count >= capacity) {
+            model.addAttribute("schedule", schedule);
+            model.addAttribute("activities", activityService.getAll());
+            model.addAttribute("instructors", instructorService.getAll());
+            model.addAttribute("clients", clientService.getAll());
+            model.addAttribute("rooms", roomService.getAll());
+            model.addAttribute("errorMessage", "⚠ У кімнаті вже немає вільних місць на цей час.");
+            return "schedule/form";
+        }
+
         scheduleService.save(schedule);
         return "redirect:/schedules";
     }
