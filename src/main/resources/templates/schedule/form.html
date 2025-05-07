@@ -6,7 +6,8 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h2 th:text="${schedule.id == null} ? 'Створити запис розкладу' : 'Редагувати запис'"></h2>
+    <h2 th:text="${(schedule.id == null) ? 'Створити запис розкладу' : 'Редагувати запис'}"></h2>
+
     <form th:action="@{/schedules}" th:object="${schedule}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <div class="mb-3">
@@ -15,10 +16,11 @@
         </div>
         <div class="mb-3">
             <label>Заняття</label>
-            <select th:field="*{activity}" class="form-select" th:object="${activities}">
+            <select th:field="*{activity}" class="form-select">
                 <option th:each="a : ${activities}" th:value="${a}" th:text="${a.title}"></option>
             </select>
         </div>
+
         <div class="mb-3">
             <label>Інструктор</label>
             <select th:field="*{instructor}" class="form-select">
@@ -34,7 +36,7 @@
         <div class="mb-3">
             <label>Кімната</label>
             <select th:field="*{room}" class="form-select">
-                <option th:each="r : ${rooms}" th:value="${r}" th:text="${r.name}"></option>
+                <option th:each="r : ${rooms}" th:value="${r}" th:text="${r.roomNumber}"></option>
             </select>
         </div>
         <button type="submit" class="btn btn-success">Зберегти</button>

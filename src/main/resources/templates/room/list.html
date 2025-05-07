@@ -18,7 +18,7 @@
         </thead>
         <tbody>
         <tr th:each="room : ${rooms}">
-            <td th:text="${room.name}"></td>
+            <td th:text="${room.roomNumber}"></td>
             <td th:text="${room.capacity}"></td>
             <td>
                 <a th:href="@{'/rooms/edit/' + ${room.id}}" class="btn btn-sm btn-primary">Редагувати</a>

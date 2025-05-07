@@ -10,8 +10,8 @@
     <form th:action="@{/rooms}" th:object="${room}" method="post">
         <input type="hidden" th:field="*{id}"/>
         <div class="mb-3">
-            <label>Назва</label>
-            <input type="text" th:field="*{name}" class="form-control"/>
+            <label>Номер кімнати</label>
+            <input type="text" th:field="*{roomNumber}" class="form-control"/>
         </div>
         <div class="mb-3">
             <label>Місткість</label>
