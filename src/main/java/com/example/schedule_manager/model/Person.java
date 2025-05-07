@@ -19,9 +19,6 @@ public abstract class Person {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
-    }
 
     public abstract String getRole();
 }

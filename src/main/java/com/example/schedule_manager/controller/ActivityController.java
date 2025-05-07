@@ -31,6 +31,7 @@ public class ActivityController {
 
     @PostMapping
     public String save(@ModelAttribute Activity activity) {
+
         activityService.save(activity);
         return "redirect:/activities";
     }

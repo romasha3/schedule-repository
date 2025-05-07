@@ -17,4 +17,5 @@ public class Activity {
     private String title;
     private String description;
     private int durationInMinutes;
+
 }
