@@ -3,12 +3,13 @@ package com.example.schedule_manager.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Schedule implements Schedulable {
+public class Schedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +28,4 @@ public class Schedule implements Schedulable {
     private Room room;
 
     private LocalDateTime startTime;
-
-    @Override
-    public boolean isSchedulable() {
-        return room != null && startTime != null;
-    }
 }

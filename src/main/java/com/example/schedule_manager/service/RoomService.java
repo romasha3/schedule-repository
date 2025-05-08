@@ -5,6 +5,7 @@ import com.example.schedule_manager.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public class RoomService {
 
@@ -31,4 +32,3 @@ public class RoomService {
         roomRepository.deleteById(id);
     }
 }
-
