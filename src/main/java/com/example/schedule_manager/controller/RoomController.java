@@ -40,7 +40,8 @@ public class RoomController {
         return "room/form";
     }
 
-    @PostMapping("/delete/{id}")
+    // Зміна: GET замість POST
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         roomService.delete(id);
         return "redirect:/rooms";
