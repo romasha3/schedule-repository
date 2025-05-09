@@ -55,12 +55,10 @@
             </select>
         </div>
 
-        <!-- Вивід зайнятих місць, якщо є -->
         <div class="alert alert-info" th:if="${occupiedCount != null}">
             Зайнято <span th:text="${occupiedCount}"></span> / <span th:text="${selectedRoomCapacity}"></span> місць на цей час.
         </div>
 
-        <!-- Повідомлення про помилку -->
         <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
         <button type="submit" class="btn btn-success">Зберегти</button>
