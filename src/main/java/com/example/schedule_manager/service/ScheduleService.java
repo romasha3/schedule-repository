@@ -34,14 +34,10 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
-    public int countClientsInRoom(Room room, LocalDateTime time) {
-        List<Schedule> all = scheduleRepository.findAll();
-        int count = 0;
-        for (Schedule s : all) {
-            if (s.getRoom().equals(room) && s.getStartTime().equals(time)) {
-                count++;
-            }
-        }
-        return count;
+    public int countClientsInRoom(Room room, LocalDateTime startTime) {
+        List<Schedule> schedules = scheduleRepository.findAll();
+        return (int) schedules.stream()
+                .filter(s -> s.getRoom().equals(room) && s.getStartTime().equals(startTime))
+                .count();
     }
 }

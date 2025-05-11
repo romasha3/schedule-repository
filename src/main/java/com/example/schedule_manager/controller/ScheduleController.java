@@ -16,8 +16,10 @@ public class ScheduleController {
     private final ClientService clientService;
     private final RoomService roomService;
 
-    public ScheduleController(ScheduleService scheduleService, ActivityService activityService,
-                              InstructorService instructorService, ClientService clientService,
+    public ScheduleController(ScheduleService scheduleService,
+                              ActivityService activityService,
+                              InstructorService instructorService,
+                              ClientService clientService,
                               RoomService roomService) {
         this.scheduleService = scheduleService;
         this.activityService = activityService;
@@ -34,7 +36,8 @@ public class ScheduleController {
 
     @GetMapping("/new")
     public String createForm(Model model) {
-        model.addAttribute("schedule", new Schedule());
+        Schedule schedule = new Schedule();
+        model.addAttribute("schedule", schedule);
         model.addAttribute("activities", activityService.getAll());
         model.addAttribute("instructors", instructorService.getAll());
         model.addAttribute("clients", clientService.getAll());
@@ -44,21 +47,6 @@ public class ScheduleController {
 
     @PostMapping
     public String save(@ModelAttribute Schedule schedule, Model model) {
-        if (schedule.getStartTime() == null ||
-                schedule.getActivity() == null ||
-                schedule.getRoom() == null ||
-                schedule.getInstructor() == null ||
-                schedule.getClient() == null) {
-
-            model.addAttribute("schedule", schedule);
-            model.addAttribute("activities", activityService.getAll());
-            model.addAttribute("instructors", instructorService.getAll());
-            model.addAttribute("clients", clientService.getAll());
-            model.addAttribute("rooms", roomService.getAll());
-            model.addAttribute("errorMessage", " Усі поля обов’язкові. Перевірте, чи ви все заповнили.");
-            return "schedule/form";
-        }
-
         int count = scheduleService.countClientsInRoom(schedule.getRoom(), schedule.getStartTime());
         int capacity = schedule.getRoom().getCapacity();
 
@@ -68,7 +56,9 @@ public class ScheduleController {
             model.addAttribute("instructors", instructorService.getAll());
             model.addAttribute("clients", clientService.getAll());
             model.addAttribute("rooms", roomService.getAll());
-            model.addAttribute("errorMessage", " У кімнаті вже немає вільних місць на цей час.");
+            model.addAttribute("errorMessage", "⚠ У кімнаті вже немає вільних місць на цей час.");
+            model.addAttribute("occupiedCount", count);
+            model.addAttribute("selectedRoomCapacity", capacity);
             return "schedule/form";
         }
 
