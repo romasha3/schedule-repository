@@ -41,43 +41,40 @@ public class ScheduleController {
         model.addAttribute("rooms", roomService.getAll());
         return "schedule/form";
     }
+
     @PostMapping
     public String save(@ModelAttribute Schedule schedule, Model model) {
-
-        if (schedule.getActivity() == null ||
-                schedule.getInstructor() == null ||
-                schedule.getClient() == null ||
+        if (schedule.getStartTime() == null ||
+                schedule.getActivity() == null ||
                 schedule.getRoom() == null ||
-                schedule.getStartTime() == null) {
+                schedule.getInstructor() == null ||
+                schedule.getClient() == null) {
 
-            model.addAttribute("errorMessage", "Будь ласка, заповніть усі поля.");
             model.addAttribute("schedule", schedule);
             model.addAttribute("activities", activityService.getAll());
             model.addAttribute("instructors", instructorService.getAll());
             model.addAttribute("clients", clientService.getAll());
             model.addAttribute("rooms", roomService.getAll());
+            model.addAttribute("errorMessage", " Усі поля обов’язкові. Перевірте, чи ви все заповнили.");
             return "schedule/form";
         }
-
 
         int count = scheduleService.countClientsInRoom(schedule.getRoom(), schedule.getStartTime());
         int capacity = schedule.getRoom().getCapacity();
 
         if (count >= capacity) {
-            model.addAttribute("errorMessage", "⚠ У кімнаті вже немає вільних місць на цей час.");
             model.addAttribute("schedule", schedule);
             model.addAttribute("activities", activityService.getAll());
             model.addAttribute("instructors", instructorService.getAll());
             model.addAttribute("clients", clientService.getAll());
             model.addAttribute("rooms", roomService.getAll());
+            model.addAttribute("errorMessage", " У кімнаті вже немає вільних місць на цей час.");
             return "schedule/form";
         }
 
         scheduleService.save(schedule);
         return "redirect:/schedules";
     }
-
-
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
