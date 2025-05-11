@@ -36,12 +36,8 @@ public class ScheduleController {
 
     @GetMapping("/new")
     public String createForm(Model model) {
-        Schedule schedule = new Schedule();
-        model.addAttribute("schedule", schedule);
-        model.addAttribute("activities", activityService.getAll());
-        model.addAttribute("instructors", instructorService.getAll());
-        model.addAttribute("clients", clientService.getAll());
-        model.addAttribute("rooms", roomService.getAll());
+        model.addAttribute("schedule", new Schedule());
+        addFormAttributes(model);
         return "schedule/form";
     }
 
@@ -51,14 +47,9 @@ public class ScheduleController {
         int capacity = schedule.getRoom().getCapacity();
 
         if (count >= capacity) {
-            model.addAttribute("schedule", schedule);
-            model.addAttribute("activities", activityService.getAll());
-            model.addAttribute("instructors", instructorService.getAll());
-            model.addAttribute("clients", clientService.getAll());
-            model.addAttribute("rooms", roomService.getAll());
             model.addAttribute("errorMessage", "⚠ У кімнаті вже немає вільних місць на цей час.");
-            model.addAttribute("occupiedCount", count);
-            model.addAttribute("selectedRoomCapacity", capacity);
+            model.addAttribute("schedule", schedule);
+            addFormAttributes(model);
             return "schedule/form";
         }
 
@@ -69,16 +60,20 @@ public class ScheduleController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
         model.addAttribute("schedule", scheduleService.getById(id));
+        addFormAttributes(model);
+        return "schedule/form";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        scheduleService.delete(id);
+        return "redirect:/schedules";
+    }
+
+    private void addFormAttributes(Model model) {
         model.addAttribute("activities", activityService.getAll());
         model.addAttribute("instructors", instructorService.getAll());
         model.addAttribute("clients", clientService.getAll());
         model.addAttribute("rooms", roomService.getAll());
-        return "schedule/form";
-    }
-
-    @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
-        scheduleService.delete(id);
-        return "redirect:/schedules";
     }
 }

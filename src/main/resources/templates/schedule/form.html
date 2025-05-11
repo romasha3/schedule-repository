@@ -21,6 +21,9 @@
 <div class="container">
     <h2 th:text="${(schedule.id == null) ? 'Створити запис розкладу' : 'Редагувати запис'}"></h2>
 
+    <!-- Повідомлення про помилку -->
+    <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
+
     <form th:action="@{/schedules}" th:object="${schedule}" method="post">
         <input type="hidden" th:field="*{id}"/>
 
@@ -32,40 +35,33 @@
         <div class="mb-3">
             <label>Заняття</label>
             <select th:field="*{activity}" class="form-select" required>
-                <option th:each="a : ${activities}" th:value="${a.id}" th:text="${a.title}"></option>
+                <option th:each="a : ${activities}" th:value="${a}" th:text="${a.title}"></option>
             </select>
         </div>
 
         <div class="mb-3">
             <label>Інструктор</label>
             <select th:field="*{instructor}" class="form-select" required>
-                <option th:each="i : ${instructors}" th:value="${i.id}" th:text="${i.name}"></option>
+                <option th:each="i : ${instructors}" th:value="${i}" th:text="${i.name}"></option>
             </select>
         </div>
 
         <div class="mb-3">
             <label>Клієнт</label>
             <select th:field="*{client}" class="form-select" required>
-                <option th:each="c : ${clients}" th:value="${c.id}" th:text="${c.name}"></option>
+                <option th:each="c : ${clients}" th:value="${c}" th:text="${c.name}"></option>
             </select>
         </div>
 
         <div class="mb-3">
             <label>Кімната</label>
             <select th:field="*{room}" class="form-select" required>
-                <option th:each="r : ${rooms}" th:value="${r.id}"
-                        th:text="${r.roomNumber + ' (Місць: ' + r.capacity + ')'}"></option>
+                <option th:each="r : ${rooms}" th:value="${r}" th:text="${r.roomNumber + ' (Місць: ' + r.capacity + ')'}"></option>
             </select>
         </div>
 
-        <div class="alert alert-info" th:if="${occupiedCount != null}">
-            Зайнято <span th:text="${occupiedCount}"></span> / <span th:text="${selectedRoomCapacity}"></span> місць на цей час.
-        </div>
-
-        <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
-
         <button type="submit" class="btn btn-success">Зберегти</button>
-        <a href="/schedules" class="btn btn-secondary">Назад</a>
+        <a href="/schedules" class="btn btn-secondary">Скасувати</a>
     </form>
 </div>
 </body>
