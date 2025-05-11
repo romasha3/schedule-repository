@@ -40,10 +40,9 @@ public class InstructorController {
         return "instructor/form";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         instructorService.delete(id);
         return "redirect:/instructors";
     }
 }
-

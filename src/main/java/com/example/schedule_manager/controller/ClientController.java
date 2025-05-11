@@ -2,10 +2,10 @@ package com.example.schedule_manager.controller;
 
 import com.example.schedule_manager.model.Client;
 import com.example.schedule_manager.service.ClientService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
@@ -40,10 +40,9 @@ public class ClientController {
         return "client/form";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         clientService.delete(id);
         return "redirect:/clients";
     }
 }
-

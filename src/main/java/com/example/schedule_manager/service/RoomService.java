@@ -25,6 +25,13 @@ public class RoomService {
     }
 
     public void save(Room room) {
+        boolean exists = roomRepository.findAll().stream()
+                .anyMatch(r -> r.getRoomNumber().equalsIgnoreCase(room.getRoomNumber()) &&
+                        r.getCapacity() == room.getCapacity() &&
+                        (room.getId() == null || !r.getId().equals(room.getId())));
+        if (exists) {
+            throw new IllegalArgumentException("Кімната з таким номером та місткістю вже існує.");
+        }
         roomRepository.save(room);
     }
 

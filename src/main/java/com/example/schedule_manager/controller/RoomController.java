@@ -29,9 +29,15 @@ public class RoomController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute Room room) {
-        roomService.save(room);
-        return "redirect:/rooms";
+    public String save(@ModelAttribute Room room, Model model) {
+        try {
+            roomService.save(room);
+            return "redirect:/rooms";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("room", room);
+            return "room/form";
+        }
     }
 
     @GetMapping("/edit/{id}")
@@ -40,7 +46,6 @@ public class RoomController {
         return "room/form";
     }
 
-    // Зміна: GET замість POST
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         roomService.delete(id);

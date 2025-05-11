@@ -1,9 +1,12 @@
+
 package com.example.schedule_manager.controller;
 
 import com.example.schedule_manager.model.Schedule;
 import com.example.schedule_manager.service.*;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -42,21 +45,19 @@ public class ScheduleController {
     }
 
     @PostMapping
-    public String save(@ModelAttribute Schedule schedule, Model model) {
-        // Перевірка на порожні поля (якщо це потрібно)
-        if (schedule.getStartTime() == null || schedule.getActivity() == null || schedule.getInstructor() == null ||
-                schedule.getClient() == null || schedule.getRoom() == null) {
-            model.addAttribute("errorMessage", "⚠ Усі поля повинні бути заповнені!");
+    public String save(@ModelAttribute @Valid Schedule schedule,
+                       BindingResult result,
+                       Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("errorMessage", "⚠️ Усі поля повинні бути заповнені!");
             addFormAttributes(model);
             return "schedule/form";
         }
 
-        int count = scheduleService.countClientsInRoom(schedule.getRoom(), schedule.getStartTime());
-        int capacity = schedule.getRoom().getCapacity();
-
-        if (count >= capacity) {
-            model.addAttribute("errorMessage", "⚠ У кімнаті вже немає вільних місць на цей час.");
-            model.addAttribute("schedule", schedule);
+        int count = scheduleService.countClientsInRoomWithOverlap(schedule.getRoom(), schedule);
+        if (count >= schedule.getRoom().getCapacity()) {
+            model.addAttribute("errorMessage", "⚠️ Немає місць у кімнаті в цей час.");
             addFormAttributes(model);
             return "schedule/form";
         }
@@ -65,7 +66,6 @@ public class ScheduleController {
         return "redirect:/schedules";
     }
 
-
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
         model.addAttribute("schedule", scheduleService.getById(id));
@@ -73,7 +73,7 @@ public class ScheduleController {
         return "schedule/form";
     }
 
-    @PostMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         scheduleService.delete(id);
         return "redirect:/schedules";

@@ -34,10 +34,17 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
-    public int countClientsInRoom(Room room, LocalDateTime startTime) {
-        List<Schedule> schedules = scheduleRepository.findAll();
-        return (int) schedules.stream()
-                .filter(s -> s.getRoom().equals(room) && s.getStartTime().equals(startTime))
+    public int countClientsInRoomWithOverlap(Room room, Schedule newSchedule) {
+        LocalDateTime start2 = newSchedule.getStartTime();
+        LocalDateTime end2 = start2.plusMinutes(newSchedule.getActivity().getDurationInMinutes());
+
+        return (int) scheduleRepository.findAll().stream()
+                .filter(s -> s.getRoom().equals(room))
+                .filter(s -> {
+                    LocalDateTime start1 = s.getStartTime();
+                    LocalDateTime end1 = start1.plusMinutes(s.getActivity().getDurationInMinutes());
+                    return start1.isBefore(end2) && start2.isBefore(end1);
+                })
                 .count();
     }
 }
