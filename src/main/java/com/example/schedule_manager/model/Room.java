@@ -16,4 +16,9 @@ public class Room {
 
     private String roomNumber;
     private int capacity;
+
+    @Override
+    public String toString() {
+        return roomNumber;
+    }
 }

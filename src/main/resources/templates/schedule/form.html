@@ -7,67 +7,69 @@
         body {
             background: linear-gradient(to right, #36d1dc, #5b86e5);
         }
-
         .container {
             max-width: 800px;
             margin-top: 40px;
             background: #fff;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-back {
-            margin-top: 15px;
+            box-shadow: 0 0 12px rgba(0,0,0,.1);
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2 th:text="${schedule.id == null} ? 'Створити запис розкладу' : 'Редагувати запис'"></h2>
+    <h2 th:text="${scheduleDTO.id == null} ? 'Створити запис розкладу' : 'Редагувати запис'"></h2>
 
-    <form th:action="@{/schedules}" th:object="${schedule}" method="post">
-        <input type="hidden" th:field="*{id}"/>
+    <form th:action="@{/schedules}" th:object="${scheduleDTO}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
+        <!-- Дата й час -->
         <div class="mb-3">
             <label>Дата та час</label>
             <input type="datetime-local" th:field="*{startTime}" class="form-control" required/>
         </div>
 
+        <!-- Активність -->
         <div class="mb-3">
             <label>Заняття</label>
-            <select th:field="*{activity}" class="form-select" required>
+            <select th:field="*{activityId}" class="form-select"
+                    onchange="this.form.action='/schedules/select-activity'; this.form.method='get'; this.form.submit();"
+                    required>
                 <option value="">-- Оберіть заняття --</option>
-                <option th:each="a : ${activities}" th:value="${a}" th:text="${a.title}"></option>
+                <option th:each="a : ${activities}" th:value="${a.id}" th:text="${a.title}"></option>
             </select>
         </div>
 
+        <!-- Інструктор -->
         <div class="mb-3">
             <label>Інструктор</label>
-            <select th:field="*{instructor}" class="form-select" required>
+            <select th:field="*{instructorId}" class="form-select" required>
                 <option value="">-- Оберіть інструктора --</option>
-                <option th:each="i : ${instructors}" th:value="${i}" th:text="${i.name}"></option>
+                <option th:each="i : ${instructors}" th:value="${i.id}"
+                        th:text="${i.name + ' (' + i.specialization + ')'}"></option>
             </select>
         </div>
 
+        <!-- Клієнт -->
         <div class="mb-3">
             <label>Клієнт</label>
-            <select th:field="*{client}" class="form-select" required>
+            <select th:field="*{clientId}" class="form-select" required>
                 <option value="">-- Оберіть клієнта --</option>
-                <option th:each="c : ${clients}" th:value="${c}" th:text="${c.name}"></option>
+                <option th:each="c : ${clients}" th:value="${c.id}" th:text="${c.name}"></option>
             </select>
         </div>
 
+        <!-- Кімната -->
         <div class="mb-3">
             <label>Кімната</label>
-            <select th:field="*{room}" class="form-select" required>
+            <select th:field="*{roomId}" class="form-select" required>
                 <option value="">-- Оберіть кімнату --</option>
-                <option th:each="r : ${rooms}" th:value="${r}"
-                        th:text="${r.roomNumber + ' (Місць: ' + r.capacity + ')'}"></option>
+                <option th:each="r : ${rooms}" th:value="${r.id}" th:text="${r.roomNumber}"></option>
             </select>
         </div>
 
-
+        <!-- Повідомлення про помилки -->
         <div class="alert alert-danger" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
 
         <button type="submit" class="btn btn-success">Зберегти</button>

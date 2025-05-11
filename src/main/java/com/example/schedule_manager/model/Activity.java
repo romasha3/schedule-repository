@@ -18,4 +18,8 @@ public class Activity {
     private String description;
     private int durationInMinutes;
 
+    @Override
+    public String toString() {
+        return title;
+    }
 }

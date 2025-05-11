@@ -2,6 +2,7 @@ package com.example.schedule_manager.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,5 +25,9 @@ public class Instructor extends Person implements Notifiable {
     public String notifyClient(String message) {
         return "Notify Instructor " + getName() + ": " + message;
     }
-}
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+}

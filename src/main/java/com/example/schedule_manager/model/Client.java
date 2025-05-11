@@ -25,4 +25,9 @@ public class Client extends Person implements Notifiable {
     public String notifyClient(String message) {
         return "Notify Client " + getName() + ": " + message;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

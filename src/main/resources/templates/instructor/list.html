@@ -4,7 +4,9 @@
     <title>Інструктори</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: linear-gradient(to right, #36d1dc, #5b86e5); }
+        body {
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+        }
         .container {
             max-width: 900px;
             margin-top: 40px;
@@ -13,7 +15,9 @@
             border-radius: 15px;
             box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
         }
-        table th, table td { vertical-align: middle; }
+        table th, table td {
+            vertical-align: middle;
+        }
         .footer-nav {
             margin-top: 20px;
             text-align: center;
@@ -27,14 +31,17 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th>Ім’я</th>
+            <th>Ім’я та спеціалізація</th>
             <th>Email</th>
             <th>Дії</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="instructor : ${instructors}">
-            <td th:text="${instructor.name}"></td>
+            <td>
+                <span th:text="${instructor.name}"></span><br/>
+                <small class="text-muted" th:text="'Спеціалізація: ' + ${instructor.specialization}"></small>
+            </td>
             <td th:text="${instructor.email}"></td>
             <td>
                 <a th:href="@{'/instructors/edit/' + ${instructor.id}}" class="btn btn-sm btn-primary">Редагувати</a>

@@ -3,6 +3,7 @@ package com.example.schedule_manager.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -33,8 +34,10 @@ public class Schedule implements Schedulable {
     @ManyToOne
     private Room room;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @NotNull(message = "Потрібно вказати дату та час")
     private LocalDateTime startTime;
+
 
     @Override
     public boolean isSchedulable() {
