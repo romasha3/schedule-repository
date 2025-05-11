@@ -35,6 +35,7 @@
         <div class="mb-3">
             <label>Заняття</label>
             <select th:field="*{activity}" class="form-select" required>
+                <option value="" disabled selected>Оберіть заняття</option>
                 <option th:each="a : ${activities}" th:value="${a}" th:text="${a.title}"></option>
             </select>
         </div>
@@ -42,6 +43,7 @@
         <div class="mb-3">
             <label>Інструктор</label>
             <select th:field="*{instructor}" class="form-select" required>
+                <option value="" disabled selected>Оберіть інструктора</option>
                 <option th:each="i : ${instructors}" th:value="${i}" th:text="${i.name}"></option>
             </select>
         </div>
@@ -49,6 +51,7 @@
         <div class="mb-3">
             <label>Клієнт</label>
             <select th:field="*{client}" class="form-select" required>
+                <option value="" disabled selected>Оберіть клієнта</option>
                 <option th:each="c : ${clients}" th:value="${c}" th:text="${c.name}"></option>
             </select>
         </div>
@@ -56,6 +59,7 @@
         <div class="mb-3">
             <label>Кімната</label>
             <select th:field="*{room}" class="form-select" required>
+                <option value="" disabled selected>Оберіть кімнату</option>
                 <option th:each="r : ${rooms}" th:value="${r}" th:text="${r.roomNumber + ' (Місць: ' + r.capacity + ')'}"></option>
             </select>
         </div>

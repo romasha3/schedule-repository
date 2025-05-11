@@ -43,6 +43,14 @@ public class ScheduleController {
 
     @PostMapping
     public String save(@ModelAttribute Schedule schedule, Model model) {
+        // Перевірка на порожні поля (якщо це потрібно)
+        if (schedule.getStartTime() == null || schedule.getActivity() == null || schedule.getInstructor() == null ||
+                schedule.getClient() == null || schedule.getRoom() == null) {
+            model.addAttribute("errorMessage", "⚠ Усі поля повинні бути заповнені!");
+            addFormAttributes(model);
+            return "schedule/form";
+        }
+
         int count = scheduleService.countClientsInRoom(schedule.getRoom(), schedule.getStartTime());
         int capacity = schedule.getRoom().getCapacity();
 
@@ -57,6 +65,7 @@ public class ScheduleController {
         return "redirect:/schedules";
     }
 
+
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
         model.addAttribute("schedule", scheduleService.getById(id));
@@ -64,7 +73,7 @@ public class ScheduleController {
         return "schedule/form";
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String delete(@PathVariable Long id) {
         scheduleService.delete(id);
         return "redirect:/schedules";

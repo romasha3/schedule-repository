@@ -35,10 +35,9 @@ public class ScheduleService {
     }
 
     public int countClientsInRoom(Room room, LocalDateTime startTime) {
-        List<Schedule> schedules = scheduleRepository.findAll();
-        return (int) schedules.stream()
-                .filter(s -> s.getRoom().getId().equals(room.getId()) &&
-                        s.getStartTime().equals(startTime))
+        return (int) scheduleRepository.findAll().stream()
+                .filter(s -> s.getRoom().getId().equals(room.getId())
+                        && s.getStartTime().equals(startTime))
                 .count();
     }
 }
